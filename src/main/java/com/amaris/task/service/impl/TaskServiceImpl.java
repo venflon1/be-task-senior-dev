@@ -33,7 +33,7 @@ public class TaskServiceImpl extends CrudTaskServiceImpl implements TaskService 
 	private TaskActionServiceImpl taskActionService;
 	
 	public TaskServiceImpl(TaskRepository taskRepository) {
-		super(taskRepository);
+		super(taskRepository, null);
 	}
 
 	@Override
@@ -71,9 +71,6 @@ public class TaskServiceImpl extends CrudTaskServiceImpl implements TaskService 
 		final String errorMessage = String.format("Error to change task due date. Task With id: %s not exists", taskId);
 		final Task task = this.getById(taskId)
 				.orElseThrow( () -> new ResourceNotFoundException(errorMessage) );
-
-//		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-//		simpleDateFormat.format(dueDate);
 
 		task.setDueDate(dueDate);
 		this.update(taskId, task);
