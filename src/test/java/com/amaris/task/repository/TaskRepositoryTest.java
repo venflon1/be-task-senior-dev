@@ -29,10 +29,6 @@ class TaskRepositoryTest {
 		+ "	VALUES(1, 'Bob'); "
 		+ "INSERT INTO employee(id, name)"
 		+ "	VALUES(2, 'Dan'); "
-		+ "INSERT INTO employee(id, name)"
-		+ "	VALUES(3, 'Tom');"
-		+ "INSERT INTO employee(id, name)"
-		+ "	VALUES(4, 'Fab'); "
 		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
 		+ "	VALUES(1, 'Create Service A', 1, 'ASSIGNED', CURRENT_DATE); "
 		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
@@ -41,22 +37,22 @@ class TaskRepositoryTest {
 		+ "	VALUES(3, 'Create Service C', 2, 'ASSIGNED', CURRENT_DATE); "
 		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
 		+ "	VALUES(4, 'Create Service D', 2, 'ASSIGNED', CURRENT_DATE); "
-		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
-		+ "	VALUES(5, 'Create Controller A ', 3, 'ASSIGNED', CURRENT_DATE); "
-		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
-		+ "	VALUES(6, 'Create Controller B',  4, 'ASSIGNED', CURRENT_DATE); "
-		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
-		+ "	VALUES(7, 'Create Controller C', NULL, 'UNASSIGNED', NULL); "
-		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
-		+ "	VALUES(8, 'Create Controller D', NULL, 'UNASSIGNED', NULL); "
 	)
 	@DisplayName(value = "ShouldReturnListOfTask")
 	void getAllTest() {
 		final List<TaskEntity> tasks = this.taskRepository.findAll();
 		
 		Assertions.assertThat(tasks).isNotNull();
-		Assertions.assertThat(tasks.size()).isEqualTo(8);
+		Assertions.assertThat(tasks.size()).isEqualTo(4);
 		tasks.forEach( task -> Assertions.assertThat(task).isNotNull() );
+		Assertions.assertThat(tasks.get(0).getId()).isEqualTo(1L);
+		Assertions.assertThat(tasks.get(0).getOwner()).isNotNull();
+		Assertions.assertThat(tasks.get(1).getId()).isEqualTo(2L);
+		Assertions.assertThat(tasks.get(1).getOwner()).isNotNull();
+		Assertions.assertThat(tasks.get(2).getId()).isEqualTo(3L);
+		Assertions.assertThat(tasks.get(2).getOwner()).isNotNull();
+		Assertions.assertThat(tasks.get(3).getId()).isEqualTo(4L);
+		Assertions.assertThat(tasks.get(3).getOwner()).isNotNull();
 	}
 	
 	@Test
