@@ -31,10 +31,10 @@ insert into EMPLOYEE(ID, NAME)
 -- # TASKS MOCK DATA #
 -- ####################
 insert into TASK (ID, DESCRIPTION, STATUS) 
-	values(2000,  'Review login workflow code',        'UNASSIGNED');
+	values(2000,  'Review login workflow code', 'UNASSIGNED');
 insert into TASK (ID, DESCRIPTION, STATUS) 
 	values(2001,  'Write Employee Service Unit Test ', 'UNASSIGNED');
 insert into TASK (ID, DESCRIPTION, STATUS) 
-	values(2002,  'Write Employee Controller', 		  'UNASSIGNED');
+	values(2002,  'Write Employee Controller', 'UNASSIGNED');
 insert into TASK (ID, DESCRIPTION, STATUS) 
-	values(2003,  'Add Swagger Api Documentation', 	  'UNASSIGNED');
+	values(2003,  'Add Swagger Api Documentation', 'UNASSIGNED');

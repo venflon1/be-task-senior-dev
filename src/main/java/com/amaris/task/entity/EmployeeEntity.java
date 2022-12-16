@@ -1,7 +1,7 @@
 package com.amaris.task.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,5 +37,5 @@ public class EmployeeEntity {
 	
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
 	@JsonBackReference
-	private Set<TaskEntity> tasks = new HashSet<>();
+	private List<TaskEntity> tasks;
 }
