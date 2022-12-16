@@ -1,6 +1,5 @@
 package com.amaris.task.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -21,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 // provare a sostitire successivamente con Record
 @Entity
-@Table(name = "EMPLOYEE")
+@Table(name = "employee")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

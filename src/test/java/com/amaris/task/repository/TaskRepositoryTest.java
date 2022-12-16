@@ -24,12 +24,38 @@ class TaskRepositoryTest {
 	private EmployeeRepository employeeRepository;
 	
 	@Test
+	@Sql(statements = ""
+		+ "INSERT INTO employee(id, name)"
+		+ "	VALUES(1, 'Bob'); "
+		+ "INSERT INTO employee(id, name)"
+		+ "	VALUES(2, 'Dan'); "
+		+ "INSERT INTO employee(id, name)"
+		+ "	VALUES(3, 'Tom');"
+		+ "INSERT INTO employee(id, name)"
+		+ "	VALUES(4, 'Fab'); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(1, 'Create Service A', 1, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(2, 'Create Service B', 1, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(3, 'Create Service C', 2, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(4, 'Create Service D', 2, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(5, 'Create Controller A ', 3, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(6, 'Create Controller B',  4, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(7, 'Create Controller C', NULL, 'UNASSIGNED', NULL); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(8, 'Create Controller D', NULL, 'UNASSIGNED', NULL); "
+	)
 	@DisplayName(value = "ShouldReturnListOfTask")
 	void getAllTest() {
 		final List<TaskEntity> tasks = this.taskRepository.findAll();
 		
 		Assertions.assertThat(tasks).isNotNull();
-		Assertions.assertThat(tasks.size()).isEqualTo(4);
+		Assertions.assertThat(tasks.size()).isEqualTo(8);
 		tasks.forEach( task -> Assertions.assertThat(task).isNotNull() );
 	}
 	

@@ -1,40 +1,40 @@
 -- #######################
--- # EMPLOYEES MOCK DATA #
+-- # employeeS MOCK DATA #
 -- #######################
-insert into EMPLOYEE (ID, NAME) 
-	values(1000, 'Monica');
-insert into EMPLOYEE(ID, NAME) 
-	values(1001, 'Elon');
-insert into EMPLOYEE(ID, NAME) 
-	values(1002, 'Steve');
-insert into EMPLOYEE(ID, NAME) 
-	values(1003, 'Bob');
-insert into EMPLOYEE(ID, NAME) 
-	values(1004, 'Julie');
-insert into EMPLOYEE(ID, NAME) 
-	values(1005, 'Edward');
-insert into EMPLOYEE (ID, NAME) 
-	values(1006, 'Bill');
-insert into EMPLOYEE(ID, NAME) 
-	values(1007, 'Stefany');
-insert into EMPLOYEE(ID, NAME) 
-	values(1008, 'Jeff');
-insert into EMPLOYEE(ID, NAME) 
-	values(1009, 'Guido');
-insert into EMPLOYEE(ID, NAME) 
-	values(1010, 'Dennis');
-insert into EMPLOYEE(ID, NAME) 
-	values(1011, 'Ada');
+INSERT INTO employee (id, name) 
+	VALUES(50, 'Monica');
+INSERT INTO employee(id, name) 
+	VALUES(51, 'Elon');
+INSERT INTO employee(id, name) 
+	VALUES(52, 'Steve');
+INSERT INTO employee(id, name) 
+	VALUES(53, 'Bob');
+INSERT INTO employee(id, name) 
+	VALUES(54, 'Julie');
+INSERT INTO employee(id, name) 
+	VALUES(55, 'Edward');
+INSERT INTO employee (id, name) 
+	VALUES(56, 'Bill');
+INSERT INTO employee(id, name) 
+	VALUES(57, 'Stefany');
+INSERT INTO employee(id, name) 
+	VALUES(58, 'Jeff');
+INSERT INTO employee(id, name) 
+	VALUES(59, 'Guido');
+INSERT INTO employee(id, name) 
+	VALUES(60, 'Dennis');
+INSERT INTO employee(id, name) 
+	VALUES(61, 'Ada');
 
 	
 -- ####################	
--- # TASKS MOCK DATA #
+-- # taskS MOCK DATA #
 -- ####################
-insert into TASK (ID, DESCRIPTION, STATUS) 
-	values(2000,  'Review login workflow code', 'UNASSIGNED');
-insert into TASK (ID, DESCRIPTION, STATUS) 
-	values(2001,  'Write Employee Service Unit Test ', 'UNASSIGNED');
-insert into TASK (ID, DESCRIPTION, STATUS) 
-	values(2002,  'Write Employee Controller', 'UNASSIGNED');
-insert into TASK (ID, DESCRIPTION, STATUS) 
-	values(2003,  'Add Swagger Api Documentation', 'UNASSIGNED');
+INSERT INTO task (id, description, status) 
+	VALUES(20,  'Review login workflow code', 'UNASSIGNED');
+INSERT INTO task (id, description, status) 
+	VALUES(21,  'Write employee Service Unit Test ', 'UNASSIGNED');
+INSERT INTO task (id, description, status) 
+	VALUES(22,  'Write employee Controller', 'UNASSIGNED');
+INSERT INTO task (id, description, status) 
+	VALUES(23,  'Add Swagger Api Documentation', 'UNASSIGNED');
