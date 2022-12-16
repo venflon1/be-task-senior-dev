@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class Employee {
+public class EmployeeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
@@ -37,5 +37,5 @@ public class Employee {
 	
 	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
 	@JsonBackReference
-	private Set<Task> tasks = new HashSet<>();
+	private Set<TaskEntity> tasks = new HashSet<>();
 }

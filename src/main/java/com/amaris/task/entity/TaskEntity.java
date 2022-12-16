@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class Task {
+public class TaskEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
@@ -45,13 +45,13 @@ public class Task {
 	@ManyToOne
 	@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
 	@JsonManagedReference
-	private Employee owner;
+	private EmployeeEntity owner;
 	
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status", nullable = false)
-	private StatusEnum statusTask = StatusEnum.UNASSIGNED;
+	private Status statusTask = Status.UNASSIGNED;
 	
-	public enum StatusEnum {
+	public enum Status {
 		ASSIGNED,
 		UNASSIGNED,
 		REASSIGNED
