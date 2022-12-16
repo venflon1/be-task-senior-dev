@@ -46,13 +46,13 @@ class TaskRepositoryTest {
 		Assertions.assertThat(tasks.size()).isEqualTo(4);
 		tasks.forEach( task -> Assertions.assertThat(task).isNotNull() );
 		Assertions.assertThat(tasks.get(0).getId()).isEqualTo(1L);
-		Assertions.assertThat(tasks.get(0).getOwner()).isNotNull();
+		Assertions.assertThat(tasks.get(0).getAssignee()).isNotNull();
 		Assertions.assertThat(tasks.get(1).getId()).isEqualTo(2L);
-		Assertions.assertThat(tasks.get(1).getOwner()).isNotNull();
+		Assertions.assertThat(tasks.get(1).getAssignee()).isNotNull();
 		Assertions.assertThat(tasks.get(2).getId()).isEqualTo(3L);
-		Assertions.assertThat(tasks.get(2).getOwner()).isNotNull();
+		Assertions.assertThat(tasks.get(2).getAssignee()).isNotNull();
 		Assertions.assertThat(tasks.get(3).getId()).isEqualTo(4L);
-		Assertions.assertThat(tasks.get(3).getOwner()).isNotNull();
+		Assertions.assertThat(tasks.get(3).getAssignee()).isNotNull();
 	}
 	
 	@Test
@@ -70,9 +70,9 @@ class TaskRepositoryTest {
 		Assertions.assertThat(task).isPresent();
 		Assertions.assertThat(task.get().getId()).isEqualTo(1L);
 		Assertions.assertThat(task.get().getDescription()).isEqualTo("Create Service A");
-		Assertions.assertThat(task.get().getOwner()).isNotNull();
-		Assertions.assertThat(task.get().getOwner().getId()).isEqualTo(1L);
-		Assertions.assertThat(task.get().getOwner().getName()).isEqualTo("Bob");
+		Assertions.assertThat(task.get().getAssignee()).isNotNull();
+		Assertions.assertThat(task.get().getAssignee().getId()).isEqualTo(1L);
+		Assertions.assertThat(task.get().getAssignee().getName()).isEqualTo("Bob");
 		Assertions.assertThat(task.get().getStatusTask().name()).isEqualTo(Status.ASSIGNED.name());
 		Assertions.assertThat(task.get().getDueDate()).isNotNull();
 	}
@@ -84,7 +84,7 @@ class TaskRepositoryTest {
 		final TaskEntity taskUpdated = this.taskRepository.save(
 			TaskEntity.builder()
 				.description("New Generic Task")
-				.owner(null)
+				.assignee(null)
 				.statusTask(Status.UNASSIGNED)
 				.dueDate(currentDate)
 				.build()
@@ -92,7 +92,7 @@ class TaskRepositoryTest {
 		
 		Assertions.assertThat(taskUpdated).isNotNull();
 		Assertions.assertThat(taskUpdated.getDescription()).isEqualTo("New Generic Task");
-		Assertions.assertThat(taskUpdated.getOwner()).isNull();
+		Assertions.assertThat(taskUpdated.getAssignee()).isNull();
 		Assertions.assertThat(taskUpdated.getStatusTask().name()).isEqualTo(Status.UNASSIGNED.name());
 		Assertions.assertThat(taskUpdated.getDueDate()).isEqualTo(currentDate);
 	}
@@ -108,7 +108,7 @@ class TaskRepositoryTest {
 		final TaskEntity task = this.taskRepository.save(
 			TaskEntity.builder()
 				.description("New Generic Task")
-				.owner(this.employeeRepository.findById(1L).get())
+				.assignee(this.employeeRepository.findById(1L).get())
 				.statusTask(Status.ASSIGNED)
 				.dueDate(currentDate)
 				.build()
@@ -116,9 +116,9 @@ class TaskRepositoryTest {
 		
 		Assertions.assertThat(task).isNotNull();
 		Assertions.assertThat(task.getDescription()).isEqualTo("New Generic Task");
-		Assertions.assertThat(task.getOwner()).isNotNull();
-		Assertions.assertThat(task.getOwner().getId()).isEqualTo(1L);
-		Assertions.assertThat(task.getOwner().getName()).isEqualTo("Bob");
+		Assertions.assertThat(task.getAssignee()).isNotNull();
+		Assertions.assertThat(task.getAssignee().getId()).isEqualTo(1L);
+		Assertions.assertThat(task.getAssignee().getName()).isEqualTo("Bob");
 		Assertions.assertThat(task.getStatusTask().name()).isEqualTo(Status.ASSIGNED.name());
 		Assertions.assertThat(task.getDueDate()).isEqualTo(currentDate);
 	}
@@ -140,9 +140,9 @@ class TaskRepositoryTest {
 		Assertions.assertThat(task).isPresent();
 		Assertions.assertThat(task.get().getId()).isEqualTo(1L);
 		Assertions.assertThat(task.get().getDescription()).isEqualTo("New Generic Task");
-		Assertions.assertThat(task.get().getOwner()).isNotNull();
-		Assertions.assertThat(task.get().getOwner().getId()).isEqualTo(1L);
-		Assertions.assertThat(task.get().getOwner().getName()).isEqualTo("Bob");
+		Assertions.assertThat(task.get().getAssignee()).isNotNull();
+		Assertions.assertThat(task.get().getAssignee().getId()).isEqualTo(1L);
+		Assertions.assertThat(task.get().getAssignee().getName()).isEqualTo("Bob");
 		Assertions.assertThat(task.get().getStatusTask().name()).isEqualTo(Status.ASSIGNED.name());
 		Assertions.assertThat(task.get().getDueDate()).isNull();
 		
@@ -151,7 +151,7 @@ class TaskRepositoryTest {
 			TaskEntity.builder()
 				.id(1L)
 				.description("New Generic Task update description")
-				.owner(this.employeeRepository.findById(2L).get())
+				.assignee(this.employeeRepository.findById(2L).get())
 				.statusTask(Status.REASSIGNED)
 				.dueDate(currentDate)
 				.build()
@@ -160,9 +160,9 @@ class TaskRepositoryTest {
 		Assertions.assertThat(taskUpdated).isNotNull();
 		Assertions.assertThat(taskUpdated.getId()).isEqualTo(1L);
 		Assertions.assertThat(taskUpdated.getDescription()).isEqualTo("New Generic Task update description");
-		Assertions.assertThat(taskUpdated.getOwner()).isNotNull();
-		Assertions.assertThat(taskUpdated.getOwner().getId()).isEqualTo(2L);
-		Assertions.assertThat(taskUpdated.getOwner().getName()).isEqualTo("Dan");
+		Assertions.assertThat(taskUpdated.getAssignee()).isNotNull();
+		Assertions.assertThat(taskUpdated.getAssignee().getId()).isEqualTo(2L);
+		Assertions.assertThat(taskUpdated.getAssignee().getName()).isEqualTo("Dan");
 		Assertions.assertThat(taskUpdated.getStatusTask().name()).isEqualTo(Status.REASSIGNED.name());
 		Assertions.assertThat(taskUpdated.getDueDate()).isEqualTo(currentDate);
 		
@@ -171,9 +171,9 @@ class TaskRepositoryTest {
 		Assertions.assertThat(task).isNotNull();
 		Assertions.assertThat(task.get().getId()).isEqualTo(1L);
 		Assertions.assertThat(task.get().getDescription()).isEqualTo("New Generic Task update description");
-		Assertions.assertThat(task.get().getOwner()).isNotNull();
-		Assertions.assertThat(task.get().getOwner().getId()).isEqualTo(2L);
-		Assertions.assertThat(task.get().getOwner().getName()).isEqualTo("Dan");
+		Assertions.assertThat(task.get().getAssignee()).isNotNull();
+		Assertions.assertThat(task.get().getAssignee().getId()).isEqualTo(2L);
+		Assertions.assertThat(task.get().getAssignee().getName()).isEqualTo("Dan");
 		Assertions.assertThat(task.get().getStatusTask().name()).isEqualTo(Status.REASSIGNED.name());
 		Assertions.assertThat(task.get().getDueDate()).isEqualTo(currentDate);
 		Assertions.assertThat(task.get().getDueDate()).isEqualTo(currentDate);
@@ -194,9 +194,9 @@ class TaskRepositoryTest {
 		Assertions.assertThat(task).isPresent();
 		Assertions.assertThat(task.get().getId()).isEqualTo(1L);
 		Assertions.assertThat(task.get().getDescription()).isEqualTo("Old Task pending");
-		Assertions.assertThat(task.get().getOwner()).isNotNull();
-		Assertions.assertThat(task.get().getOwner().getId()).isEqualTo(1L);
-		Assertions.assertThat(task.get().getOwner().getName()).isEqualTo("Bob");
+		Assertions.assertThat(task.get().getAssignee()).isNotNull();
+		Assertions.assertThat(task.get().getAssignee().getId()).isEqualTo(1L);
+		Assertions.assertThat(task.get().getAssignee().getName()).isEqualTo("Bob");
 		Assertions.assertThat(task.get().getStatusTask().name()).isEqualTo(Status.ASSIGNED.name());
 		Assertions.assertThat(task.get().getDueDate()).isNull();
 		

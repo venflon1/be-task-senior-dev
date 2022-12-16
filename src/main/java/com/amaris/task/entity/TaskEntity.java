@@ -45,11 +45,11 @@ public class TaskEntity {
 	@ManyToOne
 	@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "ID")
 	@JsonManagedReference
-	private EmployeeEntity owner;
+	private EmployeeEntity assignee;
 	
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status", nullable = false)
-	private Status statusTask = Status.UNASSIGNED;
+	private Status statusTask;
 	
 	public enum Status {
 		ASSIGNED,

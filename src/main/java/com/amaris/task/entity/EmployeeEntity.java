@@ -34,7 +34,7 @@ public class EmployeeEntity {
 	@Column(name = "NAME", length = 255, nullable = false)
 	private String name;
 	
-	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "assignee", fetch = FetchType.LAZY)
 	@JsonBackReference
 	private List<TaskEntity> tasks;
 }

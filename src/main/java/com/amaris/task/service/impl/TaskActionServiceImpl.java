@@ -25,7 +25,7 @@ public class TaskActionServiceImpl {
 			throw new TaskActionException(errorMessage);
 		}
 
-		task.setOwner(employee);
+		task.setAssignee(employee);
 		task.setStatus(Task.Status.ASSIGNED);
 		this.crudTaskService.update(task.getId(), task);
 	}
@@ -37,7 +37,7 @@ public class TaskActionServiceImpl {
 			throw new TaskActionException(errorMessage);
 		}
 
-		task.setOwner(null);
+		task.setAssignee(null);
 		task.setStatus(Task.Status.UNASSIGNED);
 		this.crudTaskService.update(task.getId(), task);
 	}
@@ -49,7 +49,7 @@ public class TaskActionServiceImpl {
 			throw new TaskActionException(errorMessgae);
 		}
 
-		task.setOwner(employee);
+		task.setAssignee(employee);
 		task.setStatus(Task.Status.REASSIGNED);
 		this.crudTaskService.update(task.getId(), task);
 	}

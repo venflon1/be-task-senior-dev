@@ -17,7 +17,7 @@ public class Task {
 	private Long id;
 	private String description;
 	private Status status;
-	private Employee owner;
+	private Employee assignee;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date dueDate;
 	

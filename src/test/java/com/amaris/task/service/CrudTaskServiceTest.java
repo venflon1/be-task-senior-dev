@@ -49,28 +49,28 @@ class CrudTaskServiceTest {
 		taskEntityOne = TaskEntity.builder()
 				.id(1L)
 				.description("Task One")
-				.owner( EmployeeEntity.builder().id(1L).name("Bob").build() )
+				.assignee( EmployeeEntity.builder().id(1L).name("Bob").build() )
 				.statusTask(com.amaris.task.entity.TaskEntity.Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
 		taskEntityTwo = TaskEntity.builder()
 				.id(2L)
 				.description("Task Two")
-				.owner( EmployeeEntity.builder().id(2L).name("Dan").build() )
+				.assignee( EmployeeEntity.builder().id(2L).name("Dan").build() )
 				.statusTask(com.amaris.task.entity.TaskEntity.Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
 		taskEntityThree = TaskEntity.builder()
 				.id(3L)
 				.description("Task Three")
-				.owner( EmployeeEntity.builder().id(3L).name("Tom").build() )
+				.assignee( EmployeeEntity.builder().id(3L).name("Tom").build() )
 				.statusTask(com.amaris.task.entity.TaskEntity.Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
 		taskEntityFour = TaskEntity.builder()
 				.id(4L)
 				.description("Task Four")
-				.owner( EmployeeEntity.builder().id(4L).name("Fab").build() )
+				.assignee( EmployeeEntity.builder().id(4L).name("Fab").build() )
 				.statusTask(com.amaris.task.entity.TaskEntity.Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
@@ -85,28 +85,28 @@ class CrudTaskServiceTest {
 		taskModelOne = Task.builder()
 			.id(1L)
 			.description("Task One")
-			.owner( Employee.builder().id(1L).name("Bob").build() )
+			.assignee( Employee.builder().id(1L).name("Bob").build() )
 			.status(Status.ASSIGNED)
 			.dueDate(new Date())
 			.build();
 		taskModelTwo = Task.builder()
 				.id(2L)
 				.description("Task Two")
-				.owner( Employee.builder().id(2L).name("Dan").build() )
+				.assignee( Employee.builder().id(2L).name("Dan").build() )
 				.status(Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
 		taskModelThree = Task.builder()
 				.id(3L)
 				.description("Task Three")
-				.owner( Employee.builder().id(3L).name("Tom").build() )
+				.assignee( Employee.builder().id(3L).name("Tom").build() )
 				.status(Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
 		taskModelFour = Task.builder()
 				.id(4L)
 				.description("Task Four")
-				.owner( Employee.builder().id(4L).name("Fab").build() )
+				.assignee( Employee.builder().id(4L).name("Fab").build() )
 				.status(Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
@@ -146,9 +146,9 @@ class CrudTaskServiceTest {
 		Assertions.assertThat(task).isPresent();
 		Assertions.assertThat(task.get().getId()).isEqualTo(1L);
 		Assertions.assertThat(task.get().getDescription()).isEqualTo("Task One");
-		Assertions.assertThat(task.get().getOwner()).isNotNull();
-		Assertions.assertThat(task.get().getOwner().getId()).isEqualTo(1L);
-		Assertions.assertThat(task.get().getOwner().getName()).isEqualTo("Bob");
+		Assertions.assertThat(task.get().getAssignee()).isNotNull();
+		Assertions.assertThat(task.get().getAssignee().getId()).isEqualTo(1L);
+		Assertions.assertThat(task.get().getAssignee().getName()).isEqualTo("Bob");
 		Assertions.assertThat(task.get().getStatus()).isEqualTo(Status.ASSIGNED);
 		Assertions.assertThat(task.get().getDueDate()).isNotNull();
 	}
@@ -160,14 +160,14 @@ class CrudTaskServiceTest {
 		final Task taskToSave = Task.builder()
 				.id(taskIdToSave)
 				.description("Task for save ")
-				.owner(Employee.builder().id(99L).name("Pino").build())
+				.assignee(Employee.builder().id(99L).name("Pino").build())
 				.status(Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
 		final TaskEntity taskEntityToSave = TaskEntity.builder()
 				.id(taskIdToSave)
 				.description("Task for save ")
-				.owner(EmployeeEntity.builder().id(99L).name("Pino").build())
+				.assignee(EmployeeEntity.builder().id(99L).name("Pino").build())
 				.statusTask(com.amaris.task.entity.TaskEntity.Status.ASSIGNED)
 				.dueDate(new Date())
 				.build();
