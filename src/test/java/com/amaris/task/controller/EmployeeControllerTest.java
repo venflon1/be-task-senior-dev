@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import com.amaris.task.model.Employee;
 import com.amaris.task.service.CrudEmployeeService;
 import com.amaris.task.service.TaskService;
+import com.amaris.task.service.impl.TaskActionServiceImpl;
 
 @WebMvcTest
 class EmployeeControllerTest {
@@ -36,6 +37,8 @@ class EmployeeControllerTest {
 	private CrudEmployeeService crudEmployeeService;
 	@MockBean
 	private TaskService taskService;
+	@MockBean
+	private TaskActionServiceImpl taskActionService;
 	
 	@BeforeAll
 	static void setupData() {

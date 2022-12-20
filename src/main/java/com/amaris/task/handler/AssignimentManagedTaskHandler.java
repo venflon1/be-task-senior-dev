@@ -2,21 +2,13 @@ package com.amaris.task.handler;
 
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
-import com.amaris.task.service.impl.TaskActionServiceImpl;
 
-@Service
+import lombok.Data;
+
+@Data
 public class AssignimentManagedTaskHandler extends ManagedTaskHandler {
-	@Autowired
-	private TaskActionServiceImpl taskActionService;
-	
-	public AssignimentManagedTaskHandler() {
-		super(null);
-	}
 	
 	@Override
 	@Transactional

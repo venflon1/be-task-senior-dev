@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.amaris.task.handler.ManageTaskEmployeeParam;
 import com.amaris.task.handler.ManagedTaskHandler;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.TaskAction;
 import com.amaris.task.service.CrudTaskService;
 import com.amaris.task.service.TaskService;
+import com.amaris.task.service.impl.TaskActionServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,10 +33,15 @@ public class TaskController {
 	private final TaskService taskService;
 	@Qualifier(value = "crudTaskService")
 	private final CrudTaskService crudTaskService;
-	
-	public TaskController(TaskService taskService, CrudTaskService crudTaskService) {
+	private final TaskActionServiceImpl taskActionService;
+
+	public TaskController(
+			TaskService taskService, 
+			CrudTaskService crudTaskService,
+			TaskActionServiceImpl taskActionService) {
 		this.taskService = taskService;
 		this.crudTaskService = crudTaskService;
+		this.taskActionService = taskActionService;
 	}
 	
 	@GetMapping
@@ -68,6 +73,7 @@ public class TaskController {
 		}
 		
 		final ManagedTaskHandler managedTaskHandler = ManagedTaskHandler.of(taskAction);
+		managedTaskHandler.setTaskActionService(this.taskActionService);
 		managedTaskHandler.setTaskId(taskId);
 		managedTaskHandler.setEmployeeId(employeeId);
 		this.taskService.manageTaskEmployee(managedTaskHandler);

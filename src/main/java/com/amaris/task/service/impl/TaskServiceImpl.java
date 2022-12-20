@@ -12,11 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.amaris.task.exception.ResourceNotFoundException;
-import com.amaris.task.handler.ManageTaskEmployeeParam;
 import com.amaris.task.handler.ManagedTaskHandler;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
-import com.amaris.task.model.TaskAction;
 import com.amaris.task.repository.TaskRepository;
 import com.amaris.task.service.CrudEmployeeService;
 import com.amaris.task.service.TaskService;
@@ -33,8 +31,7 @@ public class TaskServiceImpl extends CrudTaskServiceImpl implements TaskService 
 	public TaskServiceImpl(
 			TaskRepository taskRepository,
 			ModelMapper modelMapper, 
-			CrudEmployeeService crudEmployeeService,
-			TaskActionServiceImpl taskActionService) {
+			CrudEmployeeService crudEmployeeService) {
 		super(taskRepository, modelMapper);
 		this.crudEmployeeService = crudEmployeeService;
 	}

@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.TaskAction;
+import com.amaris.task.service.impl.TaskActionServiceImpl;
 
 import lombok.Data;
 
@@ -18,14 +19,7 @@ public abstract class ManagedTaskHandler {
 	@NotNull(message = "Employee id mustbe not null")
 	protected Long employeeId;
 	
-	public ManagedTaskHandler(final Long taskId) {
-		this(taskId, null);
-	}
-	
-	public ManagedTaskHandler(final Long taskId, final Long employeeId) {
-		this.taskId = taskId;
-		this.employeeId = employeeId;
-	}
+	protected TaskActionServiceImpl taskActionService;
 	
 	public final static ManagedTaskHandler of(final TaskAction taskAction) {
 		switch (taskAction) {
