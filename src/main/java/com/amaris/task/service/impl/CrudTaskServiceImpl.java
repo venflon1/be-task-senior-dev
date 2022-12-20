@@ -73,7 +73,8 @@ public class CrudTaskServiceImpl implements CrudTaskService {
 			.map(taskEntity -> {
 				taskEntity = this.modelMapper.map(task, TaskEntity.class);
 				taskEntity.setId(id);
-				return this.taskRepository.save(taskEntity);
+				TaskEntity taskUpdate = this.taskRepository.save(taskEntity);
+				return taskUpdate;
 			})
 			.orElseThrow(
 				() -> new UpdateException(String.format("Error to Update Task. Task with id: %s not exists", id))

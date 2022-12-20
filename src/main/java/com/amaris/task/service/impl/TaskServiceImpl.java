@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -27,13 +27,17 @@ import lombok.extern.slf4j.Slf4j;
 @Validated
 @Slf4j
 public class TaskServiceImpl extends CrudTaskServiceImpl implements TaskService {
-	@Autowired
-	private CrudEmployeeService crudEmployeeService;
-	@Autowired
-	private TaskActionServiceImpl taskActionService;
+	private final CrudEmployeeService crudEmployeeService;
+	private final TaskActionServiceImpl taskActionService;
 	
-	public TaskServiceImpl(TaskRepository taskRepository) {
-		super(taskRepository, null);
+	public TaskServiceImpl(
+			TaskRepository taskRepository,
+			ModelMapper modelMapper, 
+			CrudEmployeeService crudEmployeeService,
+			TaskActionServiceImpl taskActionService) {
+		super(taskRepository, modelMapper);
+		this.crudEmployeeService = crudEmployeeService;
+		this.taskActionService = taskActionService;
 	}
 
 	@Override
@@ -44,9 +48,9 @@ public class TaskServiceImpl extends CrudTaskServiceImpl implements TaskService 
 				.orElseThrow(() -> new ResourceNotFoundException(String.format("Task With id: %s not exists", taskId)));
 
 		final Long employeeId = manageTaskEmployeeParam.getEmployeeId();
-		Employee employee = this.crudEmployeeService
-				.getById(employeeId)
-				.orElseThrow(() -> new ResourceNotFoundException(String.format("Employee With id: %s not exists", employeeId)));
+		final Employee employee = this.crudEmployeeService
+			.getById(employeeId)
+			.orElseThrow(() -> new ResourceNotFoundException(String.format("Employee With id: %s not exists", employeeId)));
 
 		final TaskAction action = manageTaskEmployeeParam.getAction();
 		this.manageTaskAction(action, task, employee);

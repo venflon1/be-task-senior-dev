@@ -1,5 +1,7 @@
 package com.amaris.task.service;
 
+import static org.mockito.Mockito.times;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,8 @@ import org.modelmapper.ModelMapper;
 
 import com.amaris.task.entity.EmployeeEntity;
 import com.amaris.task.entity.TaskEntity;
+import com.amaris.task.exception.SaveException;
+import com.amaris.task.exception.UpdateException;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.Task.Status;
@@ -154,7 +158,7 @@ class CrudTaskServiceTest {
 	}
 	
 	@Test
-	@DisplayName(value = "ShouldSaveTaskWithSuccess")
+	@DisplayName(value = "ShouldSaveTaskWithIdNotExistingIntoDatabase")
 	void saveTaskSuccessTest() {
 		final Long taskIdToSave = 11L;
 		final Task taskToSave = Task.builder()
@@ -183,5 +187,129 @@ class CrudTaskServiceTest {
 		
 		Assertions.assertThat(taskIdSaved).isNotNull();
 		Assertions.assertThat(taskIdSaved).isEqualTo(taskIdToSave);
+	}
+	
+	@Test
+	@DisplayName(value = "ShouldNotSaveTaskBecauseTaskWithIdAlreadyExists")
+	void saveTaskFailForTaskAlreadyExistsTest() {
+		final Long taskIdToSave = 11L;
+		final Task taskToSave = Task.builder()
+				.id(taskIdToSave)
+				.description("Task for save ")
+				.assignee(Employee.builder().id(99L).name("Pino").build())
+				.status(Status.ASSIGNED)
+				.dueDate(new Date())
+				.build();
+
+		Mockito.when(this.taskRepository.existsById(taskIdToSave))
+			.thenReturn(Boolean.TRUE);
+		
+		org.junit.jupiter.api.Assertions.assertThrows(
+			SaveException.class, 
+			() -> this.crudTaskService.save(taskToSave)
+		);
+		
+		Mockito.verify(this.taskRepository, times(0))
+			.save(Mockito.any(TaskEntity.class));
+	}
+	
+	@Test
+	@DisplayName(value = "ShouldUpdateExistingTask")
+	void updateExistsingTaskSuccessTest() {
+		final Long taskId = 1L;
+		final Task taskToUpdate = Task.builder()
+				.id(taskId)
+				.description("task update description")
+				.assignee(Employee.builder().id(110L).name("Liam").build())
+				.status(Task.Status.REASSIGNED)
+				.dueDate(new Date())
+				.build();
+		
+		final TaskEntity taskFetchDb = TaskEntity.builder()
+				.id(taskId)
+				.description("task description old")
+				.assignee(EmployeeEntity.builder().id(330L).name("Jason").build())
+				.statusTask(TaskEntity.Status.ASSIGNED)
+				.dueDate(null)
+				.build();
+		
+		final TaskEntity taskEntityToUpdate = TaskEntity.builder()
+			.description(taskToUpdate.getDescription())
+			.assignee(
+				EmployeeEntity.builder()
+					.id(taskToUpdate.getAssignee().getId())
+					.name(taskToUpdate.getAssignee().getName())
+					.build()
+			)
+			.statusTask(TaskEntity.Status.REASSIGNED)
+			.dueDate(taskToUpdate.getDueDate())
+			.build();
+		
+		Mockito.when(this.taskRepository.findById(taskId))
+			.thenReturn(Optional.of(taskFetchDb));
+		Mockito.when(this.modelMapper.map(taskToUpdate, TaskEntity.class))
+			.thenReturn(taskEntityToUpdate);
+		
+		final TaskEntity taskEntityUpdated = taskEntityToUpdate;
+		taskEntityUpdated.setId(taskId);
+		Mockito.when(this.taskRepository.save(taskEntityToUpdate))
+			.thenReturn(taskEntityUpdated);
+		
+		this.crudTaskService.update(taskId, taskToUpdate);
+		
+		Mockito.verify(this.taskRepository, times(1))
+			.save(taskEntityToUpdate);
+	}
+	
+	@Test
+	@DisplayName(value = "ShouldNotUpdateTaskBecauseNotExists")
+	void updateExistsingTaskFailForTaskNotExistingTest() {
+		final Long taskId = 1L;
+		final Task taskToUpdate = Task.builder()
+				.id(taskId)
+				.description("task update description")
+				.assignee(Employee.builder().id(110L).name("Liam").build())
+				.status(Task.Status.REASSIGNED)
+				.dueDate(new Date())
+				.build();
+		
+		Mockito.when(this.taskRepository.findById(taskId))
+			.thenReturn(Optional.empty());
+
+		org.junit.jupiter.api.Assertions.assertThrows(
+			UpdateException.class,
+			() -> this.crudTaskService.update(taskId, taskToUpdate)
+		);
+		
+		Mockito.verify(this.taskRepository, times(0))
+			.save(Mockito.any(TaskEntity.class));
+	}
+	
+	@Test
+	@DisplayName(value = "ShouldDeleteExistsingTaskByItsId")
+	void deleteTaskByIdSuccessfulTest() {
+		final Long taskIdToDel = Mockito.anyLong();
+		
+		Mockito.when(this.taskRepository.findById(taskIdToDel))
+			.thenReturn(Optional.of(taskEntityOne));
+		
+		this.crudTaskService.deleteById(taskIdToDel);
+		
+		Mockito.verify(this.taskRepository, times(1))
+			.delete(taskEntityOne);
+	}
+	
+	@Test
+	@DisplayName(value = "ShouldNotDeleteTaskByItsIdBecauseNotExists")
+	void deleteTaskByIdFailForTaskNotExistsTest() {
+		final Long taskIdToDel = Mockito.anyLong();
+		
+		Mockito.when(this.taskRepository.findById(taskIdToDel))
+			.thenReturn(Optional.empty());
+		
+		this.crudTaskService.deleteById(taskIdToDel);
+		
+		Mockito.verify(this.taskRepository, times(0))
+			.delete(taskEntityOne);
 	}
 }

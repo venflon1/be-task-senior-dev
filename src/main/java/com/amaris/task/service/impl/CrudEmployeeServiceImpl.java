@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,16 +16,18 @@ import com.amaris.task.model.Employee;
 import com.amaris.task.repository.EmployeeRepository;
 import com.amaris.task.service.CrudEmployeeService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class CrudEmployeeServiceImpl implements CrudEmployeeService {
 	protected final EmployeeRepository employeeRepository;
-	@Autowired
-	private ModelMapper modelMapper;
+	protected final ModelMapper modelMapper;
+	
+	public CrudEmployeeServiceImpl(EmployeeRepository employeeRepository, ModelMapper modelMapper) {
+		this.employeeRepository = employeeRepository;
+		this.modelMapper = modelMapper;
+	}
 	
 	@Transactional(readOnly = true)
 	@Override
