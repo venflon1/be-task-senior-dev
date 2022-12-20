@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ class TaskIntegrationTest {
 	}
 	
 	@Test
-	@DisplayName(value = "SholdReturnResponseOKWithListOfTasks")
+	@DisplayName(value = "ShouldReturnResponseOKWithListOfTasks")
 	void getAllTasksTest() {	
 		final ResponseEntity<List<Task>> response = this.restTemplate.exchange(
 				 baseUri,
@@ -46,5 +47,19 @@ class TaskIntegrationTest {
 		Assertions.assertThat(response).isNotNull();
 		Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(response.getBody()).isNotNull();
+	}
+	
+	@Test
+	@DisplayName(value = "ShouldManagingAssignimentTaskKOForTaskNotExists")
+	void manageTaskWithAssignmentTest() {	
+		org.junit.jupiter.api.Assertions.assertThrows(Exception.class, () -> {
+			this.restTemplate.exchange(
+					 baseUri.concat("/manage?action=ASSIGNMENT&taskId=1&employeeId=1"),
+					 HttpMethod.GET, 
+					 null, 
+					 Void.class
+			 );
+			
+		});
 	}
 }

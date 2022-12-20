@@ -25,13 +25,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.amaris.task.handler.ManageTaskEmployeeParam;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.Task.Status;
 import com.amaris.task.model.TaskAction;
 import com.amaris.task.service.CrudEmployeeService;
 import com.amaris.task.service.TaskService;
-import com.amaris.task.service.param.ManageTaskEmployeeParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest

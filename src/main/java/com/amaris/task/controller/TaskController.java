@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amaris.task.handler.ManageTaskEmployeeParam;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.TaskAction;
 import com.amaris.task.service.CrudTaskService;
 import com.amaris.task.service.TaskService;
-import com.amaris.task.service.param.ManageTaskEmployeeParam;
 
 import lombok.extern.slf4j.Slf4j;
 

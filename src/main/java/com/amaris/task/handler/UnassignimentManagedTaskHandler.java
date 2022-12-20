@@ -1,4 +1,4 @@
-package com.amaris.task.service.param;
+package com.amaris.task.handler;
 
 import javax.transaction.Transactional;
 

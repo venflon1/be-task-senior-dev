@@ -1,4 +1,4 @@
-package com.amaris.task.service.param;
+package com.amaris.task.handler;
 
 import javax.transaction.Transactional;
 
@@ -8,18 +8,18 @@ import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.service.impl.TaskActionServiceImpl;
 
-public class ReassignimentManagedTaskHandler extends ManagedTaskHandler {
+public class AssignimentManagedTaskHandler extends ManagedTaskHandler {
 	@Autowired
 	private TaskActionServiceImpl taskActionService;
 	
-	public ReassignimentManagedTaskHandler() {
+	public AssignimentManagedTaskHandler() {
 		super(null);
 	}
 	
 	@Override
 	@Transactional
 	public void doExecute(final Task task, final Employee employee) {
-		this.taskActionService.manageReassignmentAction(task, employee);
+		this.taskActionService.manageAssignmentAction(task, employee);
 	}
-	
+
 }

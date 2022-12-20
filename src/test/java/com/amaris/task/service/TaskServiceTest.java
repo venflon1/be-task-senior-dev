@@ -18,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import com.amaris.task.entity.EmployeeEntity;
 import com.amaris.task.entity.TaskEntity;
 import com.amaris.task.exception.ResourceNotFoundException;
+import com.amaris.task.handler.ManageTaskEmployeeParam;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.Task.Status;
@@ -25,7 +26,6 @@ import com.amaris.task.model.TaskAction;
 import com.amaris.task.repository.TaskRepository;
 import com.amaris.task.service.impl.TaskActionServiceImpl;
 import com.amaris.task.service.impl.TaskServiceImpl;
-import com.amaris.task.service.param.ManageTaskEmployeeParam;
 
 @ExtendWith(MockitoExtension.class)
 public class TaskServiceTest {

@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.amaris.task.exception.ResourceNotFoundException;
+import com.amaris.task.handler.ManageTaskEmployeeParam;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.TaskAction;
 import com.amaris.task.repository.TaskRepository;
 import com.amaris.task.service.CrudEmployeeService;
 import com.amaris.task.service.TaskService;
-import com.amaris.task.service.param.ManageTaskEmployeeParam;
 
 import lombok.extern.slf4j.Slf4j;
 
