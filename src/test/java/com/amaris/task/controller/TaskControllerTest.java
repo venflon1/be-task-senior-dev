@@ -3,10 +3,12 @@ package com.amaris.task.controller;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,8 +28,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.Task.Status;
+import com.amaris.task.model.TaskAction;
 import com.amaris.task.service.CrudEmployeeService;
 import com.amaris.task.service.TaskService;
+import com.amaris.task.service.param.ManageTaskEmployeeParam;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest
@@ -83,7 +87,8 @@ class TaskControllerTest {
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 			);
 		
-		Mockito.verify(taskService, times(1)).getAll();
+		Mockito.verify(taskService, times(1))
+		       .getAll();
 		
 		response
 			.andExpect(status().isOk())
@@ -111,7 +116,8 @@ class TaskControllerTest {
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 			);
 		
-		Mockito.verify(taskService, times(1)).getById(taskId);
+		Mockito.verify(taskService, times(1))
+		       .getById(taskId);
 		
 		response
 			.andExpect(status().isOk())
@@ -143,10 +149,215 @@ class TaskControllerTest {
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 			);
 		
-		Mockito.verify(taskService, times(1)).getById(taskId);
+		Mockito.verify(taskService, times(1))
+			   .getById(taskId);
 		
 		response
 			.andExpect(status().isNotFound())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName(value = "shouldManageTaskWithAssignmentAction")
+	void manageTaskWithAssignmentTest() throws Exception {
+		final Long employeeId = 1L;
+		final Long taskId = 1L;
+		final TaskAction taskAction = TaskAction.ASSIGNMENT;
+		final ManageTaskEmployeeParam managaTaskEmployeeParam = ManageTaskEmployeeParam.builder()
+			.employeeId(employeeId)
+			.taskId(taskId)
+			.action(taskAction)
+			.build();
+
+		Mockito.doNothing()
+			.when(this.taskService)
+			.manageTaskEmployee(managaTaskEmployeeParam);
+		
+		final ResultActions response = mockMvc.perform(
+				 get(BASE_URI.concat("/manage"))
+				 .param("action", taskAction.toString())
+				 .param("taskId",  String.valueOf(taskId))
+				 .param("employeeId", String.valueOf(employeeId))
+				 .contentType(MediaType.APPLICATION_JSON_UTF8)
+			);
+		
+		Mockito.verify(taskService, times(1))
+			   .manageTaskEmployee(managaTaskEmployeeParam);
+		
+		response
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName(value = "shouldManageTaskWithAssignmentActionWithBadRequestForMissingEmployeeId")
+	void manageTaskWithAssignmentFailedForMissingEmployeeIdTest() throws Exception {
+		final Long taskId = 1L;
+		final TaskAction taskAction = TaskAction.ASSIGNMENT;
+		final ManageTaskEmployeeParam managaTaskEmployeeParam = ManageTaskEmployeeParam.builder()
+			.taskId(taskId)
+			.action(taskAction)
+			.build();
+
+		Mockito.doNothing()
+			.when(this.taskService)
+			.manageTaskEmployee(managaTaskEmployeeParam);
+		
+		final ResultActions response = mockMvc.perform(
+				 get(BASE_URI.concat("/manage"))
+				 .param("action", taskAction.toString())
+				 .param("taskId",  String.valueOf(taskId))
+				 .contentType(MediaType.APPLICATION_JSON_UTF8)
+			);
+		
+		Mockito.verify(taskService, times(0))
+			   .manageTaskEmployee(managaTaskEmployeeParam);
+		
+		response
+			.andExpect(status().isBadRequest())
+			.andDo(print());
+	}
+	
+	
+	@Test
+	@DisplayName(value = "shouldManageTaskWithUnassignmentAction")
+	void manageTaskWithUnassignmentActionTest() throws Exception {
+		final Long taskId = 1L;
+		final TaskAction taskAction = TaskAction.UNASSIGNMENT;
+		final ManageTaskEmployeeParam managaTaskEmployeeParam = ManageTaskEmployeeParam.builder()
+			.employeeId(null)
+			.taskId(taskId)
+			.action(taskAction)
+			.build();
+
+		Mockito.doNothing()
+			.when(this.taskService)
+			.manageTaskEmployee(managaTaskEmployeeParam);
+		
+		final ResultActions response = mockMvc.perform(
+				 get(BASE_URI.concat("/manage"))
+				 .param("action", taskAction.toString())
+				 .param("taskId",  String.valueOf(taskId))
+				 .contentType(MediaType.APPLICATION_JSON_UTF8)
+			);
+		
+		Mockito.verify(taskService, times(1))
+			   .manageTaskEmployee(managaTaskEmployeeParam);
+		
+		response
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName(value = "shouldManageTaskWithReassignmentAction")
+	void manageTaskWithReassignmentActionTest() throws Exception {
+		final Long employeeId = 2L;
+		final Long taskId = 1L;
+		final TaskAction taskAction = TaskAction.REASSIGNMENT;
+		final ManageTaskEmployeeParam managaTaskEmployeeParam = ManageTaskEmployeeParam.builder()
+			.employeeId(employeeId)
+			.taskId(taskId)
+			.action(taskAction)
+			.build();
+
+		Mockito.doNothing()
+			.when(this.taskService)
+			.manageTaskEmployee(managaTaskEmployeeParam);
+		
+		final ResultActions response = mockMvc.perform(
+				 get(BASE_URI.concat("/manage"))
+				 .param("action", taskAction.toString())
+				 .param("taskId",  String.valueOf(taskId))
+				 .param("employeeId",  String.valueOf(employeeId))
+				 .contentType(MediaType.APPLICATION_JSON_UTF8)
+			);
+		
+		Mockito.verify(taskService, times(1))
+			   .manageTaskEmployee(managaTaskEmployeeParam);
+		
+		response
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName(value = "shouldManageTaskWithReassignmentActionWithBadRequestForMissingEmployeeId")
+	void manageTaskWithReassignmentFailedForMissingEmployeeIdTest() throws Exception {
+		final Long taskId = 1L;
+		final TaskAction taskAction = TaskAction.REASSIGNMENT;
+		final ManageTaskEmployeeParam managaTaskEmployeeParam = ManageTaskEmployeeParam.builder()
+			.taskId(taskId)
+			.action(taskAction)
+			.build();
+
+		Mockito.doNothing()
+			.when(this.taskService)
+			.manageTaskEmployee(managaTaskEmployeeParam);
+		
+		final ResultActions response = mockMvc.perform(
+				 get(BASE_URI.concat("/manage"))
+				 .param("action", taskAction.toString())
+				 .param("taskId",  String.valueOf(taskId))
+				 .contentType(MediaType.APPLICATION_JSON_UTF8)
+			);
+		
+		Mockito.verify(taskService, times(0))
+			   .manageTaskEmployee(managaTaskEmployeeParam);
+		
+		response
+			.andExpect(status().isBadRequest())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName(value = "shouldChangeDueDateTask")
+	void changeDueDateTaskTest() throws Exception {
+		final Long taskId = 1L;
+		final TaskAction taskAction = TaskAction.ASSIGNMENT;
+		final ManageTaskEmployeeParam managaTaskEmployeeParam = ManageTaskEmployeeParam.builder()
+			.taskId(taskId)
+			.action(taskAction)
+			.build();
+		final String dateToChangeString = "23-12-2022";
+		final Date dateToChange = new SimpleDateFormat("dd-MM-yyyy").parse(dateToChangeString);
+		
+		Mockito.doNothing()
+			.when(this.taskService)
+			.changeDueDate(taskId, dateToChange);
+		
+		final ResultActions response = mockMvc.perform(
+				 put(BASE_URI.concat("/" + taskId).concat("/due-date/").concat(dateToChangeString))
+				 .contentType(MediaType.APPLICATION_JSON_UTF8)
+			);
+		
+		Mockito.verify(taskService, times(1))
+			   .changeDueDate(taskId, dateToChange);
+		
+		response
+			.andExpect(status().isOk())
+			.andDo(print());
+	}
+	
+	@Test
+	@DisplayName(value = "shouldChangeDueDateTaskBadRequestForChangeDueDateIncorrectFormat")
+	void changeDueDateTaskFailedForDuDateToChangeIncorrectFormatTest() throws Exception {
+		final Long taskId = 1L;
+		final TaskAction taskAction = TaskAction.ASSIGNMENT;
+		final ManageTaskEmployeeParam managaTaskEmployeeParam = ManageTaskEmployeeParam.builder()
+			.taskId(taskId)
+			.action(taskAction)
+			.build();
+		final String dateToChangeString = "23 Dicembre 2022";
+		
+		
+		final ResultActions response = mockMvc.perform(
+				 put(BASE_URI.concat("/" + taskId).concat("/due-date/").concat(dateToChangeString))
+				 .contentType(MediaType.APPLICATION_JSON_UTF8)
+			);
+		
+		response
+			.andExpect(status().isBadRequest())
 			.andDo(print());
 	}
 }

@@ -27,13 +27,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequiredArgsConstructor
 @Validated
 @Slf4j
 public class TaskController {
 	private final TaskService taskService;
 	@Qualifier(value = "crudTaskService")
 	private final CrudTaskService crudTaskService;
+	
+	public TaskController(TaskService taskService, CrudTaskService crudTaskService) {
+		this.taskService = taskService;
+		this.crudTaskService = crudTaskService;
+	}
 	
 	@GetMapping
 	public ResponseEntity<List<Task>> getAllTasks() {
