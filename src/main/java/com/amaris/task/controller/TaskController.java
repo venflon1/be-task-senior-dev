@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amaris.task.handler.ManagedTaskHandler;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.TaskAction;
-import com.amaris.task.service.CrudTaskService;
 import com.amaris.task.service.TaskService;
 import com.amaris.task.service.impl.TaskActionServiceImpl;
 
@@ -31,30 +29,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TaskController {
 	private final TaskService taskService;
-	@Qualifier(value = "crudTaskService")
-	private final CrudTaskService crudTaskService;
 	private final TaskActionServiceImpl taskActionService;
 
 	public TaskController(
 			TaskService taskService, 
-			CrudTaskService crudTaskService,
 			TaskActionServiceImpl taskActionService) {
 		this.taskService = taskService;
-		this.crudTaskService = crudTaskService;
 		this.taskActionService = taskActionService;
 	}
 	
 	@GetMapping
 	public ResponseEntity<List<Task>> getAllTasks() {
 		log.info("get all tasks");
-		final List<Task> tasks = this.crudTaskService.getAll();
+		final List<Task> tasks = this.taskService.getAll();
 		return new ResponseEntity<>(tasks, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<Task> getTaskById(@PathVariable(name = "id") final Long id) {
 		log.info("get task with id: {} ", id);
-		final Optional<Task> task = this.crudTaskService.getById(id);
+		final Optional<Task> task = this.taskService.getById(id);
 		if( task.isPresent() ) {
 			return ResponseEntity.ok(task.get());
 		}
