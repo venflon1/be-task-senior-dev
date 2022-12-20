@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amaris.task.handler.ManageTaskEmployeeParam;
+import com.amaris.task.handler.ManagedTaskHandler;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.TaskAction;
 import com.amaris.task.service.CrudTaskService;
@@ -66,13 +67,10 @@ public class TaskController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		this.taskService.manageTaskEmployee(
-			ManageTaskEmployeeParam.builder()
-				.action(taskAction)
-				.taskId(taskId)
-				.employeeId(employeeId)
-				.build()
-		);
+		final ManagedTaskHandler managedTaskHandler = ManagedTaskHandler.of(taskAction);
+		managedTaskHandler.setTaskId(taskId);
+		managedTaskHandler.setEmployeeId(employeeId);
+		this.taskService.manageTaskEmployee(managedTaskHandler);
 		
 		return ResponseEntity.ok().build();
 	}
