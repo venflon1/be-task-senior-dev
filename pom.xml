@@ -16,7 +16,7 @@
 	<description>Simple task assignment with Spring Boot and React</description>
 	
 	<properties>
-		<java.version>8</java.version>
+		<java.version>17</java.version>
 	</properties>
 	
 	<dependencies>
