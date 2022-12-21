@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CrudTaskServiceImpl implements CrudTaskService {
 	protected final TaskRepository taskRepository;
-	@Autowired
 	protected final ModelMapper modelMapper;
 
 	public CrudTaskServiceImpl(TaskRepository taskRepository, ModelMapper modelMapper) {
