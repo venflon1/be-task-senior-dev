@@ -6,9 +6,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
-import com.amaris.task.handler.ManagedTaskHandler;
+import com.amaris.task.handler.TaskActionHandler;
 
 public interface TaskService extends CrudTaskService {
 	public void changeDueDate(@NotNull final Long taskId, @NotNull @Future final Date dueDate);
-	public void manageTaskEmployee(@NotNull @Valid final ManagedTaskHandler manageTaskHandler);
+	public void manageTask(@NotNull @Valid final TaskActionHandler taskActionHandler);
 }

@@ -12,7 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import com.amaris.task.exception.ResourceNotFoundException;
-import com.amaris.task.handler.ManagedTaskHandler;
+import com.amaris.task.handler.TaskActionHandler;
+import com.amaris.task.handler.UnassignmentTaskHandler;
 import com.amaris.task.model.Employee;
 import com.amaris.task.model.Task;
 import com.amaris.task.repository.TaskRepository;
@@ -47,17 +48,20 @@ public class TaskServiceImpl extends CrudTaskServiceImpl implements TaskService 
 	}
 
 	@Override
-	public void manageTaskEmployee(@NotNull @Valid ManagedTaskHandler manageTaskHandler) {
-		log.info("manageTaskEmployee START - args=[manageTaskHandler={}]", manageTaskHandler);
-		final Long taskId = manageTaskHandler.getTaskId();
+	public void manageTask(@NotNull @Valid TaskActionHandler taskActionHandler) {
+		log.info("manageTask START - args=[taskActionHandler={}]", taskActionHandler);
+		final Long taskId = taskActionHandler.getTaskId();
 		final Task task = this.getById(taskId)
 				.orElseThrow(() -> new ResourceNotFoundException(String.format("Task With id: %s not exists", taskId)));
 
-		final Long employeeId = manageTaskHandler.getEmployeeId();
-		final Employee employee = this.crudEmployeeService
-			.getById(employeeId)
-			.orElseThrow(() -> new ResourceNotFoundException(String.format("Employee With id: %s not exists", employeeId)));
+		Employee employee = null;
+		if( !(taskActionHandler instanceof UnassignmentTaskHandler) ) {
+			final Long employeeId = taskActionHandler.getEmployeeId();
+			employee = this.crudEmployeeService
+					.getById(employeeId)
+					.orElseThrow(() -> new ResourceNotFoundException(String.format("Employee With id: %s not exists", employeeId)));
+		}
 
-		manageTaskHandler.doExecute(task, employee);
+		taskActionHandler.handleAction(task, employee);
 	}
 }

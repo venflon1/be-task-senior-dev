@@ -1,28 +1,11 @@
 package com.amaris.task.service;
 
-import static org.mockito.Mockito.times;
-
-import java.util.Date;
-import java.util.Optional;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
-import com.amaris.task.entity.EmployeeEntity;
-import com.amaris.task.entity.TaskEntity;
-import com.amaris.task.exception.ResourceNotFoundException;
-import com.amaris.task.handler.ManageTaskEmployeeParam;
-import com.amaris.task.model.Employee;
-import com.amaris.task.model.Task;
-import com.amaris.task.model.Task.Status;
-import com.amaris.task.model.TaskAction;
 import com.amaris.task.repository.TaskRepository;
 import com.amaris.task.service.impl.TaskActionServiceImpl;
 import com.amaris.task.service.impl.TaskServiceImpl;

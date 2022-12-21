@@ -10,11 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
@@ -38,14 +34,4 @@ public class ExceptionHandlerController {
 		);
 	}
 	
-	@Getter
-	@Setter
-	@AllArgsConstructor
-	@Builder
-	static class ResponseError {
-		private String path;
-		private String timestamp;
-		private String errorMessage;
-		private Throwable cause;
-	}
 }

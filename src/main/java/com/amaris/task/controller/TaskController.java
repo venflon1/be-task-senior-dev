@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.amaris.task.handler.ManagedTaskHandler;
+import com.amaris.task.handler.TaskActionHandler;
+import com.amaris.task.handler.TaskActionHandlerFactory;
 import com.amaris.task.model.Task;
 import com.amaris.task.model.TaskAction;
 import com.amaris.task.service.TaskService;
@@ -66,11 +67,11 @@ public class TaskController {
 			return ResponseEntity.badRequest().build();
 		}
 		
-		final ManagedTaskHandler managedTaskHandler = ManagedTaskHandler.of(taskAction);
+		final TaskActionHandler managedTaskHandler = TaskActionHandlerFactory.of(taskAction);
 		managedTaskHandler.setTaskActionService(this.taskActionService);
 		managedTaskHandler.setTaskId(taskId);
 		managedTaskHandler.setEmployeeId(employeeId);
-		this.taskService.manageTaskEmployee(managedTaskHandler);
+		this.taskService.manageTask(managedTaskHandler);
 		
 		return ResponseEntity.ok().build();
 	}
