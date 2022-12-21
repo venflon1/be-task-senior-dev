@@ -2,8 +2,6 @@ package com.amaris.task.integration;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -96,6 +94,7 @@ class TaskIntegrationTest {
 	@Test
 	@DisplayName(value = "ShouldManagingAssignimentTask")
 	@Sql(statements = ""
+		+ "DELETE FROM task;"
 		+ "INSERT INTO employee(id, name)"
 		+ "	VALUES(90, 'Phil'); "
 		+ "INSERT INTO employee(id, name)"
@@ -153,6 +152,7 @@ class TaskIntegrationTest {
 	@Test
 	@DisplayName(value = "ShouldManagingAssignimentTaskKOForEmployeeNotExists")
 	@Sql(statements = ""
+		+ "DELETE FROM task;"
 		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
 		+ "	VALUES(1, 'Create Service A', NULL, 'UNASSIGNED', NULL); ",
 		executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
@@ -179,6 +179,7 @@ class TaskIntegrationTest {
 	@Test
 	@DisplayName(value = "ShouldManagingUnassignimentTaskKOForTaskNotAssigned")
 	@Sql(statements = ""
+		+ "DELETE FROM task;"
 		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
 		+ "	VALUES(100, 'Create Service A', 1, 'UNASSIGNED', NULL); "
 	)
