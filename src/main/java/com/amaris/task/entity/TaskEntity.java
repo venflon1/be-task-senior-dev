@@ -22,7 +22,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//provare a sostitire successivamente con Record
 @Entity
 @Table(name = "task")
 @AllArgsConstructor
