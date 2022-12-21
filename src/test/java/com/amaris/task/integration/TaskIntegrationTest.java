@@ -1,13 +1,10 @@
 package com.amaris.task.integration;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,13 +18,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
-import com.amaris.task.entity.EmployeeEntity;
 import com.amaris.task.entity.TaskEntity;
 import com.amaris.task.entity.TaskEntity.Status;
 import com.amaris.task.exception.ResponseError;
 import com.amaris.task.model.Task;
-import com.amaris.task.repository.EmployeeRepository;
 import com.amaris.task.repository.TaskRepository;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -51,6 +47,7 @@ class TaskIntegrationTest {
 	@Test
 	@DisplayName(value = "ShouldReturnResponseOKWithListOfTasks")
 	@Sql(statements = ""
+		+ "DELETE FROM task;"
 		+ "INSERT INTO employee(id, name)"
 		+ "	VALUES(1, 'Bob'); "
 		+ "INSERT INTO employee(id, name)"
@@ -97,6 +94,42 @@ class TaskIntegrationTest {
 	}
 	
 	@Test
+	@DisplayName(value = "ShouldManagingAssignimentTask")
+	@Sql(statements = ""
+		+ "INSERT INTO employee(id, name)"
+		+ "	VALUES(90, 'Phil'); "
+		+ "INSERT INTO employee(id, name)"
+		+ "	VALUES(91, 'Jim'); "
+		+ "INSERT INTO employee(id, name)"
+		+ "	VALUES(92, 'Joyce'); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(311, 'Create Controller A', 90, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(312, 'Create Controller B', 92, 'ASSIGNED', CURRENT_DATE); "
+		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
+		+ "	VALUES(313, 'Create Controller C', NULL, 'UNASSIGNED', NULL); "
+	)
+	void manageTaskWithAssignmentTest() {	
+		final String  taskId = "313";
+		final String  employeeId = "91";
+		ResponseEntity<ResponseError> response = this.testRestTemplate.exchange(
+			 baseUri.concat(String.format("/manage?action=ASSIGNMENT&taskId=%s&employeeId=%s", taskId, employeeId)),
+			 HttpMethod.GET, 
+			 null, 
+			 ResponseError.class
+		 );
+		
+		Assertions.assertThat(response).isNotNull();
+		Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		Assertions.assertThat(response.getBody()).isNull();
+		
+		final TaskEntity task = this.taskRepository.findById(Long.parseLong(taskId)).get();
+		Assertions.assertThat(task.getStatusTask()).isEqualTo(Status.ASSIGNED);
+		Assertions.assertThat(task.getAssignee().getId()).isEqualTo(Long.parseLong(employeeId));
+		Assertions.assertThat(task.getAssignee().getName()).isEqualTo("Jim");
+	}
+	
+	@Test
 	@DisplayName(value = "ShouldManagingAssignimentTaskKOForTaskNotExists")
 	@Sql(statements = "DELETE FROM TASK")
 	void manageTaskWithAssignmentKOForTaskNotExistsTest() {	
@@ -121,7 +154,8 @@ class TaskIntegrationTest {
 	@DisplayName(value = "ShouldManagingAssignimentTaskKOForEmployeeNotExists")
 	@Sql(statements = ""
 		+ "INSERT INTO task(id, description, employee_id, status, due_date)"
-		+ "	VALUES(1, 'Create Service A', NULL, 'UNASSIGNED', NULL); "
+		+ "	VALUES(1, 'Create Service A', NULL, 'UNASSIGNED', NULL); ",
+		executionPhase = ExecutionPhase.BEFORE_TEST_METHOD
 	)
 	void manageTaskWithAssignmentKOForEmployeeNotExistsTest() {	
 		final String taskId = "1";
