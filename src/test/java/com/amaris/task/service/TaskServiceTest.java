@@ -33,8 +33,6 @@ import com.amaris.task.service.impl.TaskServiceImpl;
 @ExtendWith(MockitoExtension.class)
 public class TaskServiceTest {
 	@Mock
-	private CrudTaskService crudTaskService;
-	@Mock
 	private CrudEmployeeService crudEmployeeService;
 	@Mock
 	private TaskActionServiceImpl taskActionService;
